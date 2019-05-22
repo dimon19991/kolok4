@@ -1,0 +1,37 @@
+CREATE OR REPLACE PACKAGE user_dell is
+
+    procedure new_user(
+                            status out varchar2,
+                            USER_AGE in "HUMAN".age%TYPE,
+                            USER_NAME in "HUMAN".name%TYPE
+                            );
+
+end user_dell;
+
+create or replace package body user_dell is
+
+    procedure new_user(
+                            status out varchar2,
+                            USER_AGE in "HUMAN".age%TYPE,
+                            USER_NAME in "HUMAN".name%TYPE
+                            )
+    is
+    begin
+
+    BEGIN
+
+    DELETE FROM "HUMAN" WHERE age = USER_AGE and name = USER_NAME
+            RETURNING status
+                INTO status;
+
+            COMMIT;
+            status:='ok';
+         EXCEPTION
+            WHEN no_data_found THEN
+                status:='no such data';
+            WHEN OTHERS THEN
+                status:=SQLERRM;
+         END;
+     end new_user;
+
+end user_dell;
