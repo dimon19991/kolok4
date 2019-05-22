@@ -10,9 +10,10 @@ app.secret_key = 'development key'
 @app.route('/', methods=['GET', 'POST'])
 def user():
     form = UserForm()
+    helper = UserHelper()
 
     if request.method == 'POST':
-        status = delUser(
+        status = helper.delUser(
             AGE=request.form["age"],
             NAME=request.form["name"]
         )

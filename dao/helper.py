@@ -1,18 +1,23 @@
-from dao.credentials import *
 import cx_Oracle
 
-def delUser(AGE, NAME):
+class UserHelper:
 
-    connection = cx_Oracle.connect('"Dima"', '01200120', "localhost:1521/xe")
-    cursor = connection.cursor()
+    def __init__(self):
+        self.db = cx_Oracle.connect('"Dima"', '01200120', "localhost:1521/xe")
 
-    status = cursor.var(cx_Oracle.STRING)
+    def delUser(self, AGE, NAME):
 
-    cursor.callproc("USER_DELL.NEW_USER", [status, AGE, NAME])
-    cursor.close()
-    connection.close()
+        # connection = cx_Oracle.connect('"Dima"', '01200120', "localhost:1521/xe")
+        cursor = self.db.cursor()
 
-    return status.getvalue()
+
+        status = cursor.var(cx_Oracle.STRING)
+
+        cursor.callproc("USER_DELL.NEW_USER", [status, AGE, NAME])
+        cursor.close()
+        self.db.close()
+
+        return status.getvalue()
 
 
 
