@@ -5,6 +5,24 @@
     <title>Title</title>
 </head>
 <body>
+<h1>User form</h1>
+
+{#class UserForm(Form)#}
+{#   name#}
+{#   population#}
+{#   submit#}
+
+     <form action = "/" method = post>
+         <fieldset>
+            {{ form.hidden_tag() }}
+
+            {{ form.name.label }} {{ form.name }} <br/>
+            {{ form.population.label }} {{ form.population }} <br/>
+
+            {{ form.submit }}
+
+         </fieldset>
+      </form>
 
 </body>
 </html>

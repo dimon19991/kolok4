@@ -1,0 +1,37 @@
+CREATE OR REPLACE PACKAGE country_apdate is
+
+    procedure apdate(
+                            status out varchar2,
+                            COUNTRY_NMAE in out "COUNTRY".NAME%TYPE,
+                            COUNTRY_POPULATION in "COUNTRY".POPULATION%TYPE
+                            );
+
+end country_apdate;
+
+create or replace package body country_apdate is
+
+    procedure apdate(
+                            status out varchar2,
+                            COUNTRY_NMAE in out "COUNTRY".NAME%TYPE,
+                            COUNTRY_POPULATION in "COUNTRY".POPULATION%TYPE
+                            )
+    is
+    begin
+
+    BEGIN
+
+    update "COUNTRY" set population = COUNTRY_POPULATION WHERE name = COUNTRY_NMAE
+            RETURNING status, COUNTRY_NMAE
+                INTO status, COUNTRY_NMAE;
+
+            COMMIT;
+            status:='ok';
+         EXCEPTION
+            WHEN no_data_found THEN
+                status:='no such data';
+            WHEN OTHERS THEN
+                status:=SQLERRM;
+         END;
+     end apdate;
+
+end country_apdate;
